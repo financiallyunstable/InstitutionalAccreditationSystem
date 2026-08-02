@@ -32,6 +32,11 @@ const mainNavItems: NavItem[] = [
         href: '/areas',
         icon: Layers3,
     },
+    {
+        title: 'Indicators',
+        href: '/indicators',
+        icon: Layers3,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

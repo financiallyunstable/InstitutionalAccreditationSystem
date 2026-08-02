@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import { type FormEventHandler } from 'react';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
+import { ComboBox } from '@/components/ui/combobox';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -114,20 +115,16 @@ export default function FormPage({ accreditation, statuses }: Props) {
 
                         <div className="grid gap-2">
                             <Label htmlFor="status">Status</Label>
-                            <select
-                                id="status"
-                                name="status"
+                            <ComboBox
                                 value={form.data.status}
-                                onChange={(e) => form.setData('status', e.target.value as Accreditation['status'])}
-                                className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#003399] focus-visible:ring-offset-2"
-                                required
-                            >
-                                {statuses.map((status) => (
-                                    <option key={status} value={status}>
-                                        {statusLabels[status]}
-                                    </option>
-                                ))}
-                            </select>
+                                onChange={(value) => form.setData('status', value as Accreditation['status'])}
+                                className="w-full"
+                                placeholder="Select status"
+                                options={statuses.map((status) => ({
+                                    value: status,
+                                    label: statusLabels[status],
+                                }))}
+                            />
                             <InputError message={form.errors.status} />
                         </div>
 

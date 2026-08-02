@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -21,5 +22,10 @@ class Area extends Model
     public function accreditation(): BelongsTo
     {
         return $this->belongsTo(Accreditation::class);
+    }
+
+    public function indicators(): HasMany
+    {
+        return $this->hasMany(Indicator::class);
     }
 }

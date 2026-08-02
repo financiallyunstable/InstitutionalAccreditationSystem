@@ -66,6 +66,7 @@ class AreaController extends Controller
         $rows = $paginator->getCollection()->map(function (Area $area): array {
             return [
                 'id' => $area->id,
+                'accreditation_id' => $area->accreditation_id,
                 'accreditation_name' => $area->accreditation?->name,
                 'name' => $area->name,
                 'description' => $area->description,

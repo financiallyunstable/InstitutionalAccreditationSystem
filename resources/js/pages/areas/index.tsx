@@ -1,6 +1,6 @@
 import { Head, Link, router } from '@inertiajs/react';
 import { createColumnHelper, type SortingState } from '@tanstack/react-table';
-import { PencilLine, Plus, Trash2 } from 'lucide-react';
+import { Layers3, PencilLine, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import Heading from '@/components/heading';
@@ -8,9 +8,11 @@ import { ComboBox } from '@/components/ui/combobox';
 import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/ui/data-table';
 import { Label } from '@/components/ui/label';
+import { type BreadcrumbItem } from '@/types';
 
 type Area = {
     id: number;
+    accreditation_id: number;
     accreditation_name: string | null;
     name: string;
     description: string | null;
@@ -63,6 +65,12 @@ const columns = [
                     <Link href={`/areas/${row.original.id}/edit`}>
                         <PencilLine className="h-4 w-4" />
                         Edit
+                    </Link>
+                </Button>
+                <Button asChild size="sm" variant="outline">
+                    <Link href={`/indicators?accreditation_id=${row.original.accreditation_id}&area_id=${row.original.id}`}>
+                        <Layers3 className="h-4 w-4" />
+                        Indicators
                     </Link>
                 </Button>
                 <Button
@@ -147,18 +155,6 @@ export default function Index({ canCreate, accreditations, defaultAccreditationI
                 <div className="flex items-start justify-between gap-4">
                     <div className="space-y-3">
                         <Heading title="Areas" description="Create and manage areas" />
-                        <Label htmlFor="accreditation-filter">Accreditation Filter</Label>
-                        <ComboBox
-                            id="accreditation-filter"
-                            value={accreditationId}
-                            onChange={setAccreditationId}
-                            placeholder="Select accreditation"
-                            className="w-[320px]"
-                            options={accreditations.map((accreditation) => ({
-                                value: String(accreditation.id),
-                                label: `${accreditation.name}${accreditation.status === 'default' ? ' (Default)' : ''}`,
-                            }))}
-                        />
                     </div>
                     <Button
                         className="bg-[#003399] text-white hover:bg-[#002266]"
@@ -177,7 +173,26 @@ export default function Index({ canCreate, accreditations, defaultAccreditationI
                     >
                         <Plus className="h-4 w-4" />
                         Add area
-                    </Button>
+                        </Button>
+                    </div>
+
+                <div className="w-full rounded-2xl border border-[#003399] bg-[#003399] p-4 shadow-sm">
+                    <div className="w-full md:w-1/3 grid gap-2">
+                        <Label htmlFor="accreditation-filter" className="text-white">
+                            Accreditation Filter
+                        </Label>
+                        <ComboBox
+                            id="accreditation-filter"
+                            value={accreditationId}
+                            onChange={setAccreditationId}
+                            placeholder="Select accreditation"
+                            className="w-full"
+                            options={accreditations.map((accreditation) => ({
+                                value: String(accreditation.id),
+                                label: `${accreditation.name}${accreditation.status === 'default' ? ' (Default)' : ''}`,
+                            }))}
+                        />
+                    </div>
                 </div>
 
                 <div className="rounded-2xl border border-[#003399]/10 bg-white p-6 shadow-sm">
@@ -187,3 +202,14 @@ export default function Index({ canCreate, accreditations, defaultAccreditationI
         </>
     );
 }
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Areas',
+        href: '/areas',
+    },
+];
+
+Index.layout = {
+    breadcrumbs,
+};

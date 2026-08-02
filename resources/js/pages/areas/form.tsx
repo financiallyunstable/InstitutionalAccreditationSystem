@@ -3,9 +3,11 @@ import Swal from 'sweetalert2';
 import { type FormEventHandler } from 'react';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
+import { ComboBox } from '@/components/ui/combobox';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { type BreadcrumbItem } from '@/types';
 
 type Area = {
     id: number;
@@ -30,7 +32,7 @@ type Props = {
 export default function FormPage({ area, accreditations, defaultAccreditationId }: Props) {
     const isEditing = Boolean(area);
     const form = useForm({
-        accreditation_id: area?.accreditation_id ?? defaultAccreditationId ?? '',
+        accreditation_id: area?.accreditation_id ? String(area.accreditation_id) : defaultAccreditationId ? String(defaultAccreditationId) : '',
         name: area?.name ?? '',
         description: area?.description ?? '',
         video: null as File | null,
@@ -72,22 +74,17 @@ export default function FormPage({ area, accreditations, defaultAccreditationId 
                 <form onSubmit={submit} className="space-y-6 rounded-2xl border border-[#003399]/10 bg-white p-6 shadow-sm">
                     <div className="grid gap-2">
                         <Label htmlFor="accreditation_id">Accreditation</Label>
-                        <select
-                            id="accreditation_id"
-                            name="accreditation_id"
+                        <ComboBox
                             value={form.data.accreditation_id}
-                            onChange={(e) => form.setData('accreditation_id', e.target.value)}
+                            onChange={(value) => form.setData('accreditation_id', value)}
                             disabled={isEditing}
-                            className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#003399] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
-                            required
-                        >
-                            {accreditations.map((accreditation) => (
-                                <option key={accreditation.id} value={accreditation.id}>
-                                    {accreditation.name}
-                                    {accreditation.status === 'default' ? ' (Default)' : ''}
-                                </option>
-                            ))}
-                        </select>
+                            className="w-full"
+                            placeholder="Select accreditation"
+                            options={accreditations.map((accreditation) => ({
+                                value: String(accreditation.id),
+                                label: `${accreditation.name}${accreditation.status === 'default' ? ' (Default)' : ''}`,
+                            }))}
+                        />
                         <InputError message={form.errors.accreditation_id} />
                     </div>
 
@@ -140,3 +137,14 @@ export default function FormPage({ area, accreditations, defaultAccreditationId 
         </>
     );
 }
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Areas',
+        href: '/areas',
+    },
+];
+
+FormPage.layout = {
+    breadcrumbs,
+};

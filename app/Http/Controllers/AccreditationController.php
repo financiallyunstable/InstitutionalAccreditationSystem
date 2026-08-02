@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Accreditation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -67,7 +68,13 @@ class AccreditationController extends Controller
     {
         $validated = $this->validateRequest($request);
 
-        Accreditation::create($validated);
+        DB::transaction(function () use ($validated): void {
+            if ($validated['status'] === 'default') {
+                Accreditation::query()->update(['status' => 'active']);
+            }
+
+            Accreditation::create($validated);
+        });
 
         return redirect()
             ->route('accreditations.index')
@@ -86,7 +93,15 @@ class AccreditationController extends Controller
     {
         $validated = $this->validateRequest($request);
 
-        $accreditation->update($validated);
+        DB::transaction(function () use ($validated, $accreditation): void {
+            if ($validated['status'] === 'default') {
+                Accreditation::query()
+                    ->whereKeyNot($accreditation->id)
+                    ->update(['status' => 'active']);
+            }
+
+            $accreditation->update($validated);
+        });
 
         return redirect()
             ->route('accreditations.index')

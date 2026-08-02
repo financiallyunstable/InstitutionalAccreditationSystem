@@ -13,6 +13,12 @@ type Accreditation = {
     status: 'disabled' | 'active' | 'default';
 };
 
+const statusStyles: Record<Accreditation['status'], string> = {
+    active: 'bg-emerald-500/10 text-emerald-700',
+    disabled: 'bg-red-500/10 text-red-700',
+    default: 'bg-[#003399]/10 text-[#003399]',
+};
+
 const columnHelper = createColumnHelper<Accreditation>();
 
 const columns = [
@@ -22,26 +28,30 @@ const columns = [
     }),
     columnHelper.accessor('year', {
         header: 'Year',
-        cell: (info) => info.getValue(),
+        cell: (info) => <div className="text-center">{info.getValue()}</div>,
     }),
     columnHelper.accessor('status', {
         header: 'Status',
         cell: (info) => (
-            <span className="rounded-full bg-[#003399]/10 px-2.5 py-1 text-xs font-medium capitalize text-[#003399]">
-                {info.getValue()}
-            </span>
+            <div className="flex justify-center">
+                <span className={`rounded-full px-2.5 py-1 text-xs font-medium capitalize ${statusStyles[info.getValue()]}`}>
+                    {info.getValue()}
+                </span>
+            </div>
         ),
     }),
     columnHelper.display({
         id: 'actions',
         header: 'Action',
         cell: ({ row }) => (
-            <Button asChild size="sm" variant="outline">
-                <Link href={`/accreditations/${row.original.id}/edit`}>
-                    <PencilLine className="h-4 w-4" />
-                    Edit
-                </Link>
-            </Button>
+            <div className="flex justify-center">
+                <Button asChild size="sm" variant="outline">
+                    <Link href={`/accreditations/${row.original.id}/edit`}>
+                        <PencilLine className="h-4 w-4" />
+                        Edit
+                    </Link>
+                </Button>
+            </div>
         ),
     }),
 ];

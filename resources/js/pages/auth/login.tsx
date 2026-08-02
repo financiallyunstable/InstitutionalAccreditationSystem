@@ -1,5 +1,4 @@
 import { Head, useForm } from '@inertiajs/react';
-import { FormDataConvertible } from '@inertiajs/core';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
@@ -7,34 +6,36 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
+import { store } from '@/routes/login';
 
-interface LoginForm extends Record<string, FormDataConvertible> {
-    email: string;
+type LoginForm = {
+    username: string;
     password: string;
     remember: boolean;
-}
+};
 
 interface LoginProps {
     status?: string;
 }
 
 export default function Login({ status }: LoginProps) {
-    const { data, setData, post, processing, errors, reset } = useForm<LoginForm>({
-        email: '',
+    const form = useForm<LoginForm>({
+        username: '',
         password: '',
         remember: false,
     });
 
+    const { data, setData, post, processing, errors, reset } = form;
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('login'), {
+        post(store.url(), {
             onFinish: () => reset('password'),
         });
     };
 
     return (
-        <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
+        <>
             <Head title="Log in" />
 
             <form onSubmit={submit} className="mx-auto w-full max-w-md">
@@ -42,7 +43,7 @@ export default function Login({ status }: LoginProps) {
                     <img
                         src="/images/logo-pnu.png"
                         alt="PNU logo"
-                        className="h-24 w-24 object-contain"
+                        className="h-32 w-32 object-contain"
                     />
 
                     <div className="space-y-2 text-center">
@@ -50,26 +51,26 @@ export default function Login({ status }: LoginProps) {
                             Log in to your account
                         </h1>
                         <p className="text-center text-sm leading-6 text-slate-600">
-                            Enter your email and password below to log in
+                            Enter your username and password below to log in
                         </p>
                     </div>
 
                     <div className="grid w-full gap-6 pt-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Email address</Label>
+                            <Label htmlFor="username">Username</Label>
                             <Input
-                                id="email"
-                                type="email"
+                                id="username"
+                                type="text"
                                 required
                                 autoFocus
                                 tabIndex={1}
-                                autoComplete="email"
-                                value={data.email}
-                                onChange={(e) => setData('email', e.target.value)}
-                                placeholder="email@example.com"
+                                autoComplete="username"
+                                value={data.username}
+                                onChange={(e) => setData('username', e.target.value)}
+                                placeholder="admin"
                                 className="focus-visible:ring-[#003399]"
                             />
-                            <InputError message={errors.email} />
+                            <InputError message={errors.username} />
                         </div>
 
                         <div className="grid gap-2">
@@ -104,6 +105,6 @@ export default function Login({ status }: LoginProps) {
             </form>
 
             {status && <div className="mt-4 text-center text-sm font-medium text-[#003399]">{status}</div>}
-        </AuthLayout>
+        </>
     );
 }

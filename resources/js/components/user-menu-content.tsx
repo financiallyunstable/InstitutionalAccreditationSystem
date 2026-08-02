@@ -27,9 +27,12 @@ export function UserMenuContent({ user }: Props) {
     return (
         <>
             <DropdownMenuLabel className="p-0 font-normal">
-                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                    <UserInfo user={user} showEmail={true} />
-                </div>
+                <UserInfo
+                    user={user}
+                    showEmail={false}
+                    textClassName="text-black"
+                    containerClassName="px-1 py-1.5"
+                />
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>

@@ -7,10 +7,10 @@ export default function AppLogo() {
 
     return (
         <>
-            <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
+            <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-white/10 text-white">
                 <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
             </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
+            <div className="ml-1 grid flex-1 text-left text-sm text-white">
                 <span className="mb-0.5 truncate leading-tight font-semibold">
                     {name}
                 </span>

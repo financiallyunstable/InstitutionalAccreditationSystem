@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
-import AppLogo from '@/components/app-logo';
+import { usePage } from '@inertiajs/react';
+import { BookOpen, FolderGit2, LayoutGrid, ShieldCheck } from 'lucide-react';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -22,6 +22,11 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+    {
+        title: 'Accreditations',
+        href: '/accreditations',
+        icon: ShieldCheck,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
@@ -38,6 +43,8 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { name } = usePage().props;
+
     return (
         <Sidebar collapsible="icon" variant="inset" className="bg-[#003399] text-white">
             <SidebarHeader className="border-b border-white/10">
@@ -45,7 +52,20 @@ export function AppSidebar() {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <Link href={dashboard()} prefetch>
-                                <AppLogo />
+                                <div className="flex items-center gap-3">
+                                    <div className="flex aspect-square size-10 items-center justify-center p-0.5">
+                                        <img
+                                            src="/images/logo-pnu.png"
+                                            alt="PNU logo"
+                                            className="h-full w-full object-contain"
+                                        />
+                                    </div>
+                                    <div className="grid flex-1 text-left text-sm text-white">
+                                        <span className="mb-0.5 truncate leading-tight font-semibold">
+                                            {name}
+                                        </span>
+                                    </div>
+                                </div>
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>

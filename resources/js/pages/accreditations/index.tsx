@@ -44,7 +44,7 @@ const columns = [
         id: 'actions',
         header: 'Action',
         cell: ({ row }) => (
-            <div className="flex justify-center">
+            <div className="flex justify-center gap-2">
                 <Button asChild size="sm" variant="outline">
                     <Link href={`/accreditations/${row.original.id}/edit`}>
                         <PencilLine className="h-4 w-4" />

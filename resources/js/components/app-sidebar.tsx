@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid, ShieldCheck } from 'lucide-react';
+import { BookOpen, FolderGit2, LayoutGrid, Layers3, ShieldCheck } from 'lucide-react';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -26,6 +26,11 @@ const mainNavItems: NavItem[] = [
         title: 'Accreditations',
         href: '/accreditations',
         icon: ShieldCheck,
+    },
+    {
+        title: 'Areas',
+        href: '/areas',
+        icon: Layers3,
     },
 ];
 
